@@ -31,6 +31,9 @@ class HumanGroup(BaseHumanMixin):
     def __unicode__(self):
         return self.label
 
+    def humans(self):
+        return self.human_set.all()
+
 
 class HandleType(BaseMixin):
     type = models.CharField(max_length=100)
@@ -64,6 +67,9 @@ class Human(BaseHumanMixin):
     name = models.CharField(max_length=255, blank=True)
     user = models.OneToOneField(User, related_name='human', blank=True, null=True)
     handles = models.ManyToManyField(Handle)
+
+    class Meta:
+        ordering = ['display_order',]
 
     def __unicode__(self):
         """
