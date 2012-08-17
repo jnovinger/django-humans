@@ -2,12 +2,14 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+# Model mixins
 class BaseMixin(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+        ordering = ['modified', 'created',]
 
 
 class OrderedMixin(models.Model):
@@ -15,17 +17,20 @@ class OrderedMixin(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['display_order', ]
 
 class BaseHumanMixin(BaseMixin, OrderedMixin):
     class Meta:
         abstract = True
 
 
+# Begin concrete models
 class HumanGroup(BaseHumanMixin):
     label = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.label
+
 
 class HandleType(BaseMixin):
     type = models.CharField(max_length=100)
@@ -35,6 +40,7 @@ class HandleType(BaseMixin):
 
     def __unicode__(self):
         return self.type
+
 
 class Handle(BaseMixin):
     type = models.ForeignKey(HandleType)
@@ -52,11 +58,15 @@ class Human(BaseHumanMixin):
     role = models.CharField(max_length=100)
     group = models.ForeignKey(HumanGroup)
 
+    # Humans can be linked to Users or stand on their own
     name = models.CharField(max_length=255, blank=True)
-    user = models.OneToOneField(User, related_name='human')
+    user = models.OneToOneField(User, related_name='human', blank=True, null=True)
     handles = models.ManyToManyField(Handle)
 
     def __unicode__(self):
+        """
+        If a User is linked, use that, else default to name field, else is anonymous.
+        """
         if self.user:
             return self.user.get_full_name() or self.user.username
         elif self.name:
@@ -65,12 +75,18 @@ class Human(BaseHumanMixin):
             return 'anonymous'
 
     def render_handles(self):
+        """ Grab all of the handles, render them, and return them as a list. """
         pass
 
 
 class Snippet(BaseHumanMixin):
     """ Used to hold chunks of non-HTML text to be displayed. """
+
+    title = models.CharField(max_length=100)
     text = models.TextField()
 
+    class Meta:
+        ordering = ['display_order',]
+
     def __unicode__(self):
-        return self.text
+        return self.title
