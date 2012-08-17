@@ -44,7 +44,7 @@ class HumanGroup(BaseHumanMixin):
         return self.label
 
     def humans(self):
-        return self.human_set.all()
+        return self.members.all()
 
 
 class HandleType(BaseMixin):
@@ -73,7 +73,8 @@ class Handle(BaseMixin):
 
 class Human(BaseHumanMixin):
     role = models.CharField(max_length=100)
-    group = models.ForeignKey(HumanGroup)
+    group = models.ForeignKey(HumanGroup, related_name='members')
+    location = models.CharField(max_length=255, blank=True)
 
     # Humans can be linked to Users or stand on their own
     name = models.CharField(max_length=255, blank=True)
