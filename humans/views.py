@@ -4,13 +4,13 @@ from django.template import RequestContext
 from humans.models import HumanGroup, Snippet
 
 def humans(request):
-    snippets = Snippet.objects.all()
+    snippet = Snippet.objects.random_snippet()
     groups = HumanGroup.objects.all()
 
     return render_to_response(
         template_name='humans/humans.txt',
         dictionary={
-            'snippets': snippets,
+            'snippet': snippet,
             'groups': groups,
         },
         mimetype='text/plain',

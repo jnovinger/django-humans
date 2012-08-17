@@ -1,6 +1,5 @@
 {% autoescape off %}
-{% for snippet in snippets %}{{ snippet.text }}{% endfor %}
-
+{% if snippet %}{{ snippet.text }}{% endif %}
 {% for group in groups %}
 /* {{ group|upper }} */
 {% for human in group.humans %}
