@@ -3,6 +3,7 @@
 /* {{ group|upper }} */
 {% for human in group.humans %}
 {{ human }}{% if human.role %}, {{ human.role }}{% endif %}
-{{ human.render_handles }}{% if human.location %}Location: {{ human.location }}{% endif %}{% endfor %}
+{{ human.render_handles }}{% if human.location %}Location: {{ human.location }}{% endif %}
+{% endfor %}
 {% endfor %}
 {% endautoescape %}
