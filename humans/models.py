@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.template import Context, Template
 
 # Model mixins
 class BaseMixin(models.Model):
@@ -49,9 +49,11 @@ class Handle(BaseMixin):
     def __unicode__(self):
         return self.handle
 
-    def render_handle(self):
+    def render(self):
         """ This is where we should hook the template system """
-        pass
+        template = Template(self.type.template)
+        return template.render(Context({'handle':self.handle}))
+
 
 
 class Human(BaseHumanMixin):
@@ -76,8 +78,10 @@ class Human(BaseHumanMixin):
 
     def render_handles(self):
         """ Grab all of the handles, render them, and return them as a list. """
-        pass
-
+        handles = ''
+        for handle in self.handles.all():
+            handles += '%s\n' % handle.render()
+        return handles
 
 class Snippet(BaseHumanMixin):
     """ Used to hold chunks of non-HTML text to be displayed. """
