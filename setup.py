@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url='https://github.com/jnovinger/django-humans',
-    license='',
+    license='MIT - http://opensource.org/licenses/mit-license.php',
     description='A completely over-engineered Django app to provide /humans.txt.',
     long_description=open('README.md').read(),
     classifiers=[
