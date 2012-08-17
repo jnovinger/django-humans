@@ -72,7 +72,7 @@ class Handle(BaseMixin):
 
 
 class Human(BaseHumanMixin):
-    role = models.CharField(max_length=100)
+    role = models.CharField(max_length=100, blank=True)
     group = models.ForeignKey(HumanGroup, related_name='members')
     location = models.CharField(max_length=255, blank=True)
 
