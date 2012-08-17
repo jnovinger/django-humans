@@ -12,7 +12,7 @@ class SnippetManager(models.Manager):
             return Snippet()
 
         num = len(snippets)
-        return snippets[random.randint(0, num)]
+        return snippets[random.randint(0, num - 1)]
 
 # Model mixins
 class BaseMixin(models.Model):
