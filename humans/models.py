@@ -62,7 +62,7 @@ class Handle(BaseMixin):
     handle = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return self.handle
+        return self.render()
 
     def render(self):
         """ This is where we should hook the template system """
