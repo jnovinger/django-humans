@@ -1,6 +1,18 @@
+import random
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.template import Context, Template
+
+# Model managers
+class SnippetManager(models.Manager):
+    def random_snippet(self):
+        snippets = self.all()
+        if not snippets:
+            return Snippet()
+
+        num = len(snippets)
+        return snippets[random.randint(0, num)]
 
 # Model mixins
 class BaseMixin(models.Model):
@@ -94,6 +106,8 @@ class Snippet(BaseHumanMixin):
 
     title = models.CharField(max_length=100)
     text = models.TextField()
+
+    objects = SnippetManager()
 
     class Meta:
         ordering = ['display_order',]
